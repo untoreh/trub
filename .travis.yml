@@ -1,0 +1,19 @@
+install: skip
+sudo: false
+language: generic
+services:
+- docker
+before_script:
+- docker run -d --name ct -v $PWD:/srv -v /dev:/dev -v /sys:/sys --privileged --cap-add=ALL -w /srv alpine:edge /bin/sleep 36000
+script:
+- docker exec ct ./run.sh
+deploy:
+  provider: releases
+  api_key:
+    secure: b8EV/YvJDOJ7HrVLLFX0aDvd7HIfay/JrD2IKRVg5K2PDV7fML9GecIYbmgxglRmE0CawkBC60Q/zZY9BYbSQUDeoRfZLkXbNmVwksO5fKixlr0iqJ7UpMBxbirdWL6jE+B7a0qmsiL0Ku6hF+nWm9Z2oW989e6l3mqDWLZj0++qL4ryY/6mSOXga/q3rprOh03YDP9/ROapuRoOD2cqqfwH1uGw5Y4r3Hx2gd5O2DIW3UMWmIHau3hxBnFDJf4CdAaU9bbQOM6Rzb2/y6aEh+kg3WpMpVKiSPUZG63djk6Dppw1DWehYDBJ3yleVinEC8F3buQ/QZcFVXUER8xgqAJqMOmZmQ+726VcbaCu2Q80uC+H2YqkpwbpcmdfJJcd/MAZjNuRiZTE9ehcKfgWbw6ElQLNh++CvlTPlSn89O0FXT8/ctDx3LczthMrgKA7bx9tO7Z+U8s12LOFSStbAJEJNo07srNFHNoz3v+z92NSabuqFKe/MsHVSLb48GEQGxibwyOI4jJyPCdU0MFUw1LHYGHYRCmRa/IgyG2PYIdU/TQCzZPspGZtc0OVtx/zfg2El1PEJzyDmwou2dvXRaAxsq59jH8GO9bIjxzJWt7hTvS08FyWHl8ZrUD14MVI1QCTlk2L2srg91sDKLnkZXqBCpBwT18HHy+6xXluLbs=
+  skip_cleanup: true
+  file:
+   - "trub.tar"
+   - "delta-trub.tar"
+  on:
+    tags: true
