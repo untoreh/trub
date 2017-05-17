@@ -42,4 +42,4 @@ ostree --repo=${repo} static-delta generate $ref --inline --min-fallback-size 0 
 tar cf $delta_artifact $newrev && rm $newrev
 ostree --repo=${repo} static-delta generate $ref --inline --min-fallback-size 0  \
  --filename=${newrev} --empty
-tar cf $newrev && rm $newrev
+tar cf $artifact $newrev && rm $newrev
