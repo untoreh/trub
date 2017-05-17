@@ -1,6 +1,4 @@
-install: skip
 sudo: false
-language: generic
 services:
 - docker
 before_script:
