@@ -14,6 +14,7 @@ deploy:
   skip_cleanup: true
   file:
    - "trub.tar"
+   - "trub.sum"
    - "delta-trub.tar"
   on:
     tags: true

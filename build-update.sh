@@ -54,3 +54,4 @@ tar cf $delta_artifact $newrev && rm $newrev
 ostree --repo=${repo} static-delta generate $ref --inline --min-fallback-size 0  \
  --filename=${newrev} --empty
 tar cf $artifact $newrev && rm $newrev
+echo $new_csum > ${csum_artifact}
