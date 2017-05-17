@@ -15,6 +15,7 @@ apk add --update-cache \
 	xz \
 	coreutils \
 	binutils \
+	libressl \
 	ca-certificates \
 	ostree
 
