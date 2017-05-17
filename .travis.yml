@@ -11,7 +11,7 @@ script:
   if [ -f file.up ]; then
     git tag -d $TRAVIS_TAG
     git push --delete origin $TRAVIS_TAG
-    travis cancel $TRAVIS_BUILD_NUMBER --no-interactive
+    travis cancel $TRAVIS_BUILD_NUMBER --no-interactive -t $TRAVIS_TOKEN
   fi
 deploy:
   provider: releases
