@@ -1,10 +1,12 @@
-install: skip
+install: true
 sudo: false
 language: generic
 services:
 - docker
+before_install:
+- env > saved.env
 before_script:
-- docker run -d --name ct -v $PWD:/srv -v /dev:/dev -v /sys:/sys --privileged --cap-add=ALL -w /srv alpine:edge /bin/sleep 36000
+- docker run -d --env-file saved.env --name ct -v $PWD:/srv -v /dev:/dev -v /sys:/sys --privileged --cap-add=ALL -w /srv alpine:edge /bin/sleep 36000
 script:
 - docker exec ct ./run.sh
 deploy:
