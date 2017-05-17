@@ -33,10 +33,10 @@ fetch_artifact() {
     [ -z "$(echo "$art_url" | grep "://")" ] && exit 1
     ## if no destination dir stream to stdo
     if [ "$3" = "-" ]; then
-        wget $art_url -O-
+        wget $art_url -qO-
     else
         mkdir -p $3
-        wget $art_url -O- | tar xz -C $3
+        wget $art_url -qO- | tar xa -C $3
     fi
 }
 
