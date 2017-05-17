@@ -2,7 +2,7 @@
 
 source functions.sh
 
-remote_repo="untoreh/trub"
+rem_repo="untoreh/trub"
 repo="trub"
 artifact="trub.tar"
 csum_artifact="trub.sum"
@@ -19,7 +19,7 @@ fi
 install_tools "ostree util-linux wget"
 
 ## beware the slash
-got=$(fetch_artifact $remote_repo /$artifact prev)
+got=$(fetch_artifact $rem_repo /$artifact prev)
 
 ## if we have an artifact
 if [ $got ]; then
