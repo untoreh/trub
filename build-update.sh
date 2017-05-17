@@ -17,7 +17,7 @@ fi
 
 install_tools "ostree util-linux wget"
 
-got=$(fetch_artifact $repo $artifact prev)
+got=$(fetch_artifact $remote_repo $artifact prev)
 
 ## if we have an artifact
 if [ $got ]; then

@@ -17,7 +17,7 @@ prepare_rootfs $rootfs
 cd $rootfs
 
 ## fetch cloud image
-wget $base_url --show-progress -qO artifact
+wget $base_url -qO artifact
 tar xf artifact
 rm artifact
 
