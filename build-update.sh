@@ -1,5 +1,5 @@
 #!/bin/bash
-source functions.pine
+source functions.sh
 
 remote_repo="untoreh/trub"
 repo="trub"
