@@ -27,4 +27,5 @@ rm artifact
 echo -n "$newV" >etc/${os}
 
 ##
+wrap_rootfs $rootfs
 cd -
