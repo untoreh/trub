@@ -1,6 +1,4 @@
-install: true
 sudo: false
-language: generic
 services:
 - docker
 before_install:
