@@ -1,12 +1,15 @@
+install: skip
 sudo: false
+language: generic
 services:
 - docker
-before_install:
-- env > saved.env
 before_script:
-- docker run -d --env-file saved.env --name ct -v $PWD:/srv -v /dev:/dev -v /sys:/sys --privileged --cap-add=ALL -w /srv alpine:edge /bin/sleep 36000
+- docker run -d --name ct -v $PWD:/srv -v /dev:/dev -v /sys:/sys --privileged --cap-add=ALL -w /srv alpine:edge /bin/sleep 36000
 script:
 - docker exec ct ./run.sh
+- git tag -d $TRAVIS_TAG
+- git push --delete origin $TRAVIS_TAG
+- travis cancel $TRAVIS_BUILD_NUMBER --no-interactive
 deploy:
   provider: releases
   api_key:

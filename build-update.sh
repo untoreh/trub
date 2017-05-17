@@ -36,10 +36,9 @@ fi
 old_csum=$(fetch_artifact $rem_repo /${csum_artifact} -)
 new_csum=$(ostree checksum ${tree})
 if [ "$old_csum" = "$new_csum" ]; then
-    git tag -d $TRAVIS_TAG
-    git push --delete origin $TRAVIS_TAG
-    travis cancel $TRAVIS_BUILD_NUMBER --no-interactive
+
     printc "release already up to date"
+    echo "true" > file.up
     exit
 fi
 
