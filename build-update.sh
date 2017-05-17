@@ -38,7 +38,7 @@ new_csum=$(ostree checksum ${tree})
 if [ "$old_csum" = "$new_csum" ]; then
 
     printc "release already up to date"
-    echo "true" > file.up
+    touch file.up
     exit
 fi
 
