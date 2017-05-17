@@ -25,3 +25,6 @@ rm artifact
 
 ## save the new version number
 echo -n "$newV" >etc/${os}
+
+##
+cd -
