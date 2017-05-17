@@ -5,6 +5,7 @@ source functions.sh
 remote_repo="untoreh/trub"
 repo="trub"
 artifact="trub.tar"
+csum_artifact="trub.sum"
 delta_artifact="delta-trub.tar"
 tree="tree"
 ref="trunk"
@@ -29,6 +30,15 @@ if [ $got ]; then
     ## name the commit
     ostree --repo=$repo refs --delete $ref
     ostree --repo=$repo refs --create=$ref $rev
+fi
+
+## compare checksums of previous and grown trees, abort if still up to date
+old_csum=$(fetch_artifact $rem_repo /${csum_artifact} -)
+new_csum=$(ostree checksum ${tree})
+if [ "$old_csum" = "$new_csum" ]; then
+    travis cancel $TRAVIS_BUILD_NUMBER --no-interactive
+    printc "release already up to date"
+    exit
 fi
 
 ## commit the recently grown tree on top of the previous image in the repo
