@@ -47,7 +47,7 @@ newrev=$(ostree --repo=$repo commit -s $(date)'-build' -b $ref --tree=dir=${tree
 ## prune older commits
 ostree prune --repo=$repo --refs-only --keep-younger-than="3 months ago"
 
-## then generate the sparse and scratch delta and archive
+## then generate the sparse,scratch archived deltas and scratch checksum
 ostree --repo=${repo} static-delta generate $ref --inline --min-fallback-size 0  \
  --filename=${newrev}
 tar cf $delta_artifact $newrev && rm $newrev
