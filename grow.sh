@@ -5,6 +5,7 @@ source functions.sh
 repo="untoreh/trub"
 os="trub"
 base_url="https://partner-images.canonical.com/core/xenial/current/ubuntu-xenial-core-cloudimg-amd64-root.tar.gz"
+rootfs="/srv/tree"
 
 ## get release tag
 newV=`last_release $repo`
@@ -12,9 +13,8 @@ newV=`last_release $repo`
 printc "$newV is the new version"
 
 ## tree init
-mkdir -p /srv/tree
-cd /srv/tree
-rm -rf ./*
+prepare_rootfs $rootfs
+cd $rootfs
 
 ## fetch cloud image
 wget $base_url -O artifact
