@@ -1,5 +1,6 @@
 #!/bin/bash
 
+shopt -s expand_aliases &>/dev/null
 cn="\033[1;32;40m"
 cf="\033[0m"
 printc() {
@@ -28,15 +29,21 @@ last_release() {
 ## $2 artifact name
 ## $3 dest dir
 fetch_artifact() {
+    [ -f $3/$2 ] && return 0
     art_url=$(wget -qO- https://api.github.com/repos/${1}/releases |
-        grep browser_download_url | grep ${2} | head -n 1 | cut -d '"' -f 4)
+    grep browser_download_url | grep ${2} | head -n 1 | cut -d '"' -f 4)
     [ -z "$(echo "$art_url" | grep "://")" ] && exit 1
     ## if no destination dir stream to stdo
     if [ "$3" = "-" ]; then
         wget $art_url -qO-
     else
         mkdir -p $3
-        wget $art_url -qO- | tar xa -C $3
+        if [ $(echo "$2" | grep -E "gz|tgz|zip|xz|7z") ]; then
+            wget $art_url -qO- | tar xz -C $3
+        else
+            wget $art_url -qO- | tar xa -C $3
+        fi
+        touch $3/$2
     fi
 }
 
@@ -44,6 +51,7 @@ fetch_artifact() {
 ## $2 mount target
 ## mount image, ${lon} populated with loop device number
 mount_image() {
+    umount -Rfd $2 ; rm -rf $2 && mkdir $2
     lon=0
     while [ -z "`losetup -P /dev/loop${lon} $(realpath ${1}) && echo true`" ]; do
         lon=$((lon + 1))
@@ -57,6 +65,28 @@ mount_image() {
         mkdir -p $tgt/$mp
         mount -o nouuid $p $tgt/$mp
     done
+}
+
+## $1 rootfs
+mount_hw() {
+    rootfs=$1
+    mkdir -p $rootfs
+    cd $rootfs
+    mkdir -p dev proc sys
+    mount --bind /dev dev
+    mount --bind /proc proc
+    mount --bind /sys sys
+    cd -
+}
+
+## $1 rootfs
+umount_hw() {
+    rootfs=$1
+    cd $rootfs || return 1
+    umount dev
+    umount proc
+    umount sys
+    cd -
 }
 
 ## $@ apk args
@@ -97,7 +127,7 @@ prepare_rootfs() {
 ## $1 ref
 ## routing after-modification actions for ostree checkouts
 wrap_rootfs() {
-    [ -z "$1" ] && (echo "no target directory privided to wrap_rootfs"; exit 1)
+    [ -z "$1" ] && (echo "no target directory provided to wrap_rootfs"; exit 1)
     cd ${1}
     rm -rf var/cache/apk/*
     umount -Rf dev proc sys run &>/dev/null
@@ -122,6 +152,29 @@ install_tools() {
 ## return the name of the first file named with 64numchars
 b64name() {
     echo $(basename $(find $1 | grep -E [a-z0-9]{64}))
+}
+
+compare_csums() {
+    if [ "$new_csum" = "$old_csum" ] ; then
+        printc "${pkg} already up to update."
+        echo $pkg >> file.up
+        exit
+    fi
+}
+
+install_glib() {
+    mount -o remount,ro /proc &>/dev/null
+    ## GLIB
+    GLIB_VERSION=`last_version sgerrand/alpine-pkg-glibc`
+    wget -q -O $1/etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub
+    wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIB_VERSION/glibc-$GLIB_VERSION.apk
+    if [ -n "$1" ]; then
+        apk --root $1 add glibc-$GLIB_VERSION.apk
+    else
+        apk add glibc-$GLIB_VERSION.apk
+    fi
+    rm glibc-$GLIB_VERSION.apk
+    mount -o remount,rw /proc &>/dev/null
 }
 ## routing to add packages over existing tree
 ## checkout the trunk using hardlinks
