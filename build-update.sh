@@ -33,13 +33,13 @@ if [ $got ]; then
     ostree --repo=$repo refs --create=$ref $rev
 fi
 
-## compare checksums of previous and grown trees, abort if still up to date
-old_csum=$(fetch_artifact $rem_repo /${csum_artifact} -)
-new_csum=$(ostree checksum ${tree})
-compare_csums
-
 ## commit the recently grown tree on top of the previous image in the repo
 newrev=$(ostree --repo=$repo commit -s $(date)'-build' -b $ref --tree=dir=${tree})
+
+## compare checksums of previous and grown trees, abort if still up to date
+old_csum=$(fetch_artifact $rem_repo /${csum_artifact} -)
+new_csum=$(ostree --repo=$repo ls $ref -Cd | awk '{print $5}')
+compare_csums
 
 ## prune older commits
 ostree prune --repo=$repo --refs-only --keep-younger-than="3 months ago"
