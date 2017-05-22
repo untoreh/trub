@@ -8,7 +8,7 @@ base_url="https://partner-images.canonical.com/core/xenial/current/ubuntu-xenial
 rootfs="/srv/tree"
 
 ## get release tag
-newV=`last_release $repo`
+newV=$(last_release $repo)
 
 printc "$newV is the new version"
 

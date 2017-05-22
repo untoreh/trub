@@ -1,6 +1,9 @@
 sudo: false
 services:
 - docker
+env:
+- trees_repo=untoreh/trees
+- base=trub
 install:
 - gem install travis
 before_script:
@@ -26,3 +29,10 @@ deploy:
    - "delta-trub.tar"
   on:
     tags: true
+after_deploy:
+  - |
+    ## since a build has been deployed rebuild dependend images on the /trees repo
+    source functions.sh
+    git clone --depth=1 https://github.com/$trees_repo && cd $(basename $trees_repo)
+    git tag ${base}-$(md)
+    git push --tags
