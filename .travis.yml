@@ -2,8 +2,7 @@ sudo: false
 services:
 - docker
 env:
-- trees_repo=untoreh/trees
-- base=trub
+- trees_repo=untoreh/trees base=trub
 install:
 - gem install travis
 before_script:
