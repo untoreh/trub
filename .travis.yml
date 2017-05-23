@@ -16,6 +16,7 @@ script:
     git tag -d $TRAVIS_TAG
     git push --delete $GIT_REMOTE $TRAVIS_TAG
     travis cancel $TRAVIS_BUILD_NUMBER --no-interactive -t $TRAVIS_TOKEN
+    sleep 3600
   fi
 deploy:
   provider: releases
