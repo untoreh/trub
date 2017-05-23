@@ -2,7 +2,7 @@ sudo: false
 services:
 - docker
 env:
-- trees_repo=untoreh/trees base=trub
+- trees_repo=untoreh/trees tag_prefix=trub
 install:
 - gem install travis
 before_script:
@@ -34,5 +34,5 @@ after_deploy:
     ## since a build has been deployed rebuild dependend images on the /trees repo
     source functions.sh
     git clone --depth=1 https://$GIT_USER:$GIT_TOKEN@github.com/$trees_repo && cd $(basename $trees_repo)
-    git tag ${base}-$(md)
+    git tag ${tag_prefix}-$(md)
     git push --tags
