@@ -24,7 +24,7 @@ if $(fetch_artifact $rem_repo /$artifact prev); then
     cmt=$(b64name prev)
 
     ## apply the scratch delta to the empty repo
-    rev=$(ostree --repo=$repo static-delta apply-offline ${cmt})
+    rev=$(ostree --repo=$repo static-delta apply-offline prev/${cmt})
     ## name the commit
     ostree --repo=$repo refs --delete $ref
     ostree --repo=$repo refs --create=$ref $rev
