@@ -19,11 +19,8 @@ fi
 
 install_tools "ostree util-linux wget"
 
-## beware the slash
-got=$(fetch_artifact $rem_repo /$artifact prev)
-
-## if we have an artifact
-if [ $got ]; then
+## if we have an artifact (beware the slash)
+if $(fetch_artifact $rem_repo /$artifact prev); then
     cmt=$(b64name prev)
 
     ## apply the scratch delta to the empty repo
@@ -40,9 +37,6 @@ newrev=$(ostree --repo=$repo commit -s $(date)'-build' -b $ref --tree=dir=${tree
 old_csum=$(fetch_artifact $rem_repo /${csum_artifact} -)
 new_csum=$(ostree --repo=$repo ls $ref -Cd | awk '{print $5}')
 compare_csums
-
-## prune older commits
-ostree prune --repo=$repo --refs-only --keep-younger-than="3 months ago"
 
 ## then generate the sparse,scratch archived deltas and scratch checksum
 ostree --repo=${repo} static-delta generate $ref --inline --min-fallback-size 0  \
