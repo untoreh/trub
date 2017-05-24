@@ -19,5 +19,5 @@ handle_tags() {
 	git clone --depth=1 https://$GIT_USER:$GIT_TOKEN@github.com/$trees_repo && cd $(basename $trees_repo)
     ## tag_prefix defined in yml env:
 	git tag ${tag_prefix}-$(md)
-	git push --tags
+	git push --tags --force
 }
