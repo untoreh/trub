@@ -1,5 +1,5 @@
 #!/bin/bash
-source functions.sh
+. ./functions.sh
 
 repo="trub"
 tree="tree"

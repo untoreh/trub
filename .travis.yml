@@ -4,7 +4,7 @@ services:
 env:
 - trees_repo=untoreh/trees tag_prefix=trub
 install:
-- source travis-helper.sh
+- . ./travis-helper.sh
 before_script:
 - docker run -d --name ct -v $PWD:/srv -v /dev:/dev -v /sys:/sys --privileged --cap-add=ALL -w /srv alpine /bin/sleep 36000
 script:

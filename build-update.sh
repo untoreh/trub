@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source functions.sh
+. ./functions.sh
 
 rem_repo="untoreh/trub"
 repo="trub"

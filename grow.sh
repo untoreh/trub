@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source functions.sh
+. ./functions.sh
 
 repo="untoreh/trub"
 os="trub"

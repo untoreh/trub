@@ -1,5 +1,5 @@
 #!/bin/sh
-source functions.sh
+. ./functions.sh
 
 ## prepare
 printc "preparing..."

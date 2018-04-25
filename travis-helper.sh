@@ -1,7 +1,7 @@
 #!/bin/bash
 
 gem install travis
-source functions.sh
+. ./functions.sh
 
 handle_deploy() {
 	if [ "$TRAVIS_TAG" -a -f file.up ]; then

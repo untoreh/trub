@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cat << EOF >>/etc/apk/repositories
+http://dl-cdn.alpinelinux.org/alpine/edge/community
 http://dl-cdn.alpinelinux.org/alpine/edge/testing
 EOF
 
@@ -17,5 +18,5 @@ apk add --update-cache  \
  ca-certificates  \
  ostree
 
-source ./functions.sh
-source ./glib.sh
+. ./functions.sh
+. ./glib.sh
